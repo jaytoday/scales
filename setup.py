@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# Copyright 2011 The greplin-twisted-utils Authors.
+# Copyright 2011 The scales Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Setup script for greplin-twisted-utils."""
+"""Setup script for scales."""
 
 try:
   from setuptools import setup
@@ -21,28 +21,36 @@ except ImportError:
   from distutils.core import setup
 
 setup(name='scales',
-      version='1.0.6',
+      version='1.0.9',
       description='Stats for Python processes',
       license='Apache',
       author='Greplin, Inc.',
       author_email='opensource@greplin.com',
       url='https://www.github.com/Cue/scales',
       install_requires=[
-        'nose',
-        'simplejson==3.3.3',
         'six',
       ],
-      package_dir = {'':'src'},
-      packages = [
+      package_dir={'':'src'},
+      packages=[
         'greplin',
         'greplin.scales',
       ],
-      namespace_packages = [
+      namespace_packages=[
         'greplin',
       ],
-      tests_require = [
+      tests_require=[
           'nose',
       ],
       test_suite = 'nose.collector',
-      zip_safe = True
+      zip_safe = True,
+      classifiers=[
+          'Programming Language :: Python',
+          'Programming Language :: Python :: 2',
+          'Programming Language :: Python :: 2.6',
+          'Programming Language :: Python :: 2.7',
+          'Programming Language :: Python :: 3',
+          'Programming Language :: Python :: 3.2',
+          'Programming Language :: Python :: 3.3',
+          'Programming Language :: Python :: 3.4',
+    ],
 )

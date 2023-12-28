@@ -16,11 +16,7 @@
 
 from collections import defaultdict
 import datetime
-try:
-  # Prefer simplejson for speed.
-  import simplejson as json
-except ImportError:
-  import json
+import json
 import os
 import re
 
@@ -364,8 +360,7 @@ class Aggregation(object):
     if data is None:
       return
 
-    # Checks for both a python 2 or python 3 dictionary
-    if hasattr(aggregators, 'iteritems') or hasattr(aggregators, 'items'):
+    if hasattr(aggregators, 'items'):
       # Keep walking the tree.
       for key, value in six.iteritems(aggregators):
         if isinstance(key, tuple):

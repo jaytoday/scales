@@ -26,6 +26,9 @@ from socket import gethostname
 
 import six
 
+log = logging.getLogger(__name__)
+
+
 class GraphitePusher(object):
   """A class that pushes all stat values to Graphite on-demand."""
 
@@ -99,9 +102,9 @@ class GraphitePusher(object):
           value = value()
         except:                       # pylint: disable=W0702
           value = None
-          logging.exception('Error when calling stat function for graphite push')
+          log.exception('Error when calling stat function for graphite push')
 
-      if hasattr(value, 'iteritems'):
+      if hasattr(value, 'items'):
         self.push(value, '%s%s.' % (prefix, self._sanitize(name)), subpath)
       elif self._forbidden(subpath, value):
         continue
@@ -161,12 +164,12 @@ class GraphitePeriodicPusher(threading.Thread, GraphitePusher):
     """Loop forever, pushing out stats."""
     self.graphite.start()
     while True:
-      logging.info('Graphite pusher is sleeping for %d seconds', self.period)
+      log.debug('Graphite pusher is sleeping for %d seconds', self.period)
       time.sleep(self.period)
-      logging.info('Pushing stats to Graphite')
+      log.debug('Pushing stats to Graphite')
       try:
         self.push()
-        logging.info('Done pushing stats to Graphite')
+        log.debug('Done pushing stats to Graphite')
       except:
-        logging.exception('Exception while pushing stats to Graphite')
+        log.exception('Exception while pushing stats to Graphite')
         raise

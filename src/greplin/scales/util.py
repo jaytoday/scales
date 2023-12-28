@@ -15,6 +15,7 @@
 """Useful utility functions and objects."""
 
 from six.moves.queue import Queue
+from six import binary_type
 from math import exp
 
 import logging
@@ -22,6 +23,8 @@ import random
 import socket
 import threading
 import time
+
+log = logging.getLogger(__name__)
 
 
 def lookup(source, keys, fallback = None):
@@ -94,13 +97,16 @@ class GraphiteReporter(threading.Thread):
     """Send a line to graphite. Retry with exponential backoff."""
     if not self.sock:
       self.connect()
+    if not isinstance(msg, binary_type):
+      msg = msg.encode("UTF-8")
+
     backoff = 0.001
     while True:
       try:
         self.sock.sendall(msg)
         break
       except socket.error:
-        logging.warning('Graphite connection error', exc_info = True)
+        log.warning('Graphite connection error', exc_info = True)
         self.disconnect()
         time.sleep(random.uniform(0, 2.0*backoff))
         backoff = min(backoff*2.0, 5.0)
